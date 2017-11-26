@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,6 +47,7 @@ import rs.aleph.android.example21.db.model.RealEstate;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final int SELECT_PICTURE = 1;
 
     private static final String TAG = "PERMISSIONS";
 
@@ -231,6 +233,102 @@ public class Home extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Da bi dobili pristup Galeriji slika na uredjaju
+     * moramo preko URI-ja pristupiti delu baze gde su smestene
+     * slike uredjaja. Njima mozemo pristupiti koristeci sistemski
+     * ContentProvider i koristeci URI images/* putanju
+     *
+     * Posto biramo sliku potrebno je da pozovemo aktivnost koja icekuje rezultat
+     * Kada dobijemo rezultat nazad prikazemo sliku i dobijemo njenu tacnu putanju
+     * */
+   /* private void selectPicture(){
+        Intent intent = new Intent();
+        intent.setType("image*//*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }*/
+
+    /**
+     * Sismtemska metoda koja se automatksi poziva ako se
+     * aktivnost startuje u startActivityForResult rezimu
+     *
+     * Ako je ti slucaj i ako je sve proslo ok, mozemo da izvucemo
+     * sadrzaj i to da prikazemo. Rezultat NIJE sliak nego URI do te slike.
+     * Na osnovu toga mozemo dobiti tacnu putnaju do slike ali i samu sliku
+     * */
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                //String selectedImagePath = selectedImageUri.getPath();
+
+                Dialog dialog = new Dialog(MainActivity.this);
+                dialog.setContentView(R.layout.image_dialog);
+                dialog.setTitle("Image dialog");
+
+                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    image.setImageBitmap(bitmap);
+                    Toast.makeText(this, selectedImageUri.getPath(),Toast.LENGTH_SHORT).show();
+
+                    dialog.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }*/
+
+
+
+    private void selectPicture(){
+        Intent intent = new Intent();
+        intent.setType("image*//*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
+    public String imagePath(){
+        selectPicture();
+        String path = getIntent().getExtras().getString("selectedImagePath");
+        //onActivityResult(int requestCode, int resultCode, Intent data);
+        return path;
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                String selectedImagePath = selectedImageUri.getPath();
+                data.putExtra("selectedImagePath",selectedImagePath);
+
+
+
+
+               /* Dialog dialog = new Dialog(Home.this);
+                dialog.setContentView(R.layout.image_dialog);
+                dialog.setTitle("Image dialog");
+
+                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    image.setImageBitmap(bitmap);
+                    Toast.makeText(this, selectedImageUri.getPath(), Toast.LENGTH_SHORT).show();
+
+                    dialog.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+            }
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -255,13 +353,13 @@ public class Home extends AppCompatActivity
 
                     final EditText editName = (EditText) dialog.findViewById(R.id.re_name);
                     final EditText editDescription = (EditText) dialog.findViewById(R.id.re_description);
-                    final EditText editImage = (EditText) dialog.findViewById(R.id.re_image);
+                    final Button btnImage = (Button) dialog.findViewById(R.id.btn_image);
                     final EditText editAdress = (EditText) dialog.findViewById(R.id.re_adress);
                     final EditText editTel = (EditText) dialog.findViewById(R.id.re_telephone);
                     final EditText editQuad = (EditText) dialog.findViewById(R.id.re_quad);
                     final EditText editRoom = (EditText) dialog.findViewById(R.id.re_room);
                     final EditText editPrice = (EditText) dialog.findViewById(R.id.re_price);
-                    RealEstate realEstate = new RealEstate();
+                    final RealEstate realEstate = new RealEstate();
 
                     if (editName.getText().toString().isEmpty()){
                         Toast.makeText(Home.this, "Name can't be empty.",Toast.LENGTH_SHORT).show();
@@ -272,10 +370,8 @@ public class Home extends AppCompatActivity
                         Toast.makeText(Home.this, "Description can't be empty.",Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (editImage.getText().toString().equals("")){
-                        Toast.makeText(Home.this, "Image name can't be empty.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+
+
                     if (editAdress.getText().toString().equals("")){
                         Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
                         return;
@@ -306,10 +402,19 @@ public class Home extends AppCompatActivity
                         Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
                     }
 
+                    btnImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String path = null;
+                            imagePath();
+                            realEstate.setmImage(path);
+                        }
+                    });
+
 
                     realEstate.setmName(editName.getText().toString());
                     realEstate.setmDescription(editDescription.getText().toString());
-                    realEstate.setmImage(editImage.getText().toString());
+                    
                     realEstate.setmAdress(editAdress.getText().toString());
                     realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
                     realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));
