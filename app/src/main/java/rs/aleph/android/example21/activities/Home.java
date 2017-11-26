@@ -1,14 +1,22 @@
 package rs.aleph.android.example21.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +30,10 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import rs.aleph.android.example21.R;
@@ -36,6 +47,8 @@ import rs.aleph.android.example21.db.model.RealEstate;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "PERMISSIONS";
+
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar=null;
@@ -43,6 +56,7 @@ public class Home extends AppCompatActivity
     private CharSequence drawerTitle;
     private ActionBarDrawerToggle toggle;
     DrawerLayout.DrawerListener listener;
+    public static String REAL_ESTATE = "selectedItemId";
 
     private DatabaseHelper databaseHelper;
 
@@ -53,22 +67,27 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        List<RealEstate> listRs1 = new ArrayList<>();
+        try {
+            listRs1 = getDatabaseHelper().getRealEstateDao().queryForAll();
+            if (listRs1 == null){
+
+                insertToExternalStorage("zamak_duga.jpg");
+                insertToExternalStorage("zamak.jpg");
+                insertToExternalStorage("zamak_prolece.jpg");
+                insertToExternalStorage("zimska_kuca.jpg");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         final ListView listView = (ListView)findViewById(R.id.real_estates);
 
         try {
-             /*   RealEstate rs = new RealEstate();
-            rs.setmId(0);
-            rs.setmName("nesto");
-            rs.setmDescription("nesto");
-            rs.setmAdress("nesto");
-            rs.setmImage("nesto");
-            rs.setmTel(11111);
-            rs.setmPrice(2.2);
-            rs.setmRoom(2);
-            rs.setmQuadrature(12.5);
-            List<RealEstate> listRs = new ArrayList<>();
-            listRs.add(rs);*/
 
             List<RealEstate> listRs = getDatabaseHelper().getRealEstateDao().queryForAll();
             ListAdapter adapter1 = new ArrayAdapter<RealEstate>(Home.this,R.layout.list_item,listRs);
@@ -79,7 +98,7 @@ public class Home extends AppCompatActivity
                     Intent intent = new Intent(Home.this,SecondActivity.class);
                     RealEstate r = (RealEstate)listView.getItemAtPosition(position);
                     long selectedItemId = r.getmId();
-                    intent.putExtra("selectedItemId",selectedItemId);
+                    intent.putExtra(REAL_ESTATE,selectedItemId);
                     startActivity(intent);
                 }
             });
@@ -91,14 +110,7 @@ public class Home extends AppCompatActivity
         }
 
 
-      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         title = drawerTitle = getTitle();
@@ -112,10 +124,13 @@ public class Home extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
 
-
-
-
+    private void insertToExternalStorage(String nameImage) throws IOException {
+        InputStream is = null;
+        is = getAssets().open(nameImage);
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+        MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,nameImage,"jpg");
     }
 
 
@@ -158,6 +173,56 @@ public class Home extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+
+    /**
+     * Od verzije Marshmallow Android uvodi pojam dinamickih permisija
+     * Sto korisnicima olaksva rad, a programerima uvodi dodadan posao.
+     * Cela ideja ja u tome, da se permisije ili prava da aplikcija
+     * nesto uradi, ne zahtevaju prilikom instalacije, nego prilikom
+     * prve upotrebe te funkcionalnosti. To za posledicu ima da mi
+     * svaki put moramo da proverimo da li je odredjeno pravo dopustneo
+     * ili ne. Iako nije da ponovo trazimo da korisnik dopusti, u protivnom
+     * tu funkcionalnost necemo obaviti uopste.
+     * */
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
+
+    /**
+     *
+     * Ako odredjena funkcija nije dopustena, saljemo zahtev android
+     * sistemu da zahteva odredjene permisije. Korisniku seprikazuje
+     * diloag u kom on zeli ili ne da dopusti odedjene permisije.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -13,8 +13,11 @@ import android.view.MenuItem;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
+import java.sql.SQLException;
+
 import rs.aleph.android.example21.R;
 import rs.aleph.android.example21.db.DatabaseHelper;
+import rs.aleph.android.example21.db.model.RealEstate;
 
 /**
  * Created by KaraklicDM on 26.11.2017.
@@ -56,6 +59,18 @@ public class SecondActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        long id = getIntent().getExtras().getLong(Home.REAL_ESTATE);
+        try {
+            RealEstate realEstate = getDatabaseHelper().getRealEstateDao().queryForId((int)id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
     }
 
     @Override
