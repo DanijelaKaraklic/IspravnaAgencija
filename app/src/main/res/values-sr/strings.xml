@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Погледи</string>
+
+    <string name="activity_main_name">Главна активност</string>
+    <string name="activity_main_toolbar_title">Главна активност</string>
+
+    <string name="activity_settings_name">Подешавања</string>
+
+    <string name="fragment_detail_buy">Купи</string>
+
+
+
+
+    <string name="dialog_about_title">О апликацији</string>
+    <string name="dialog_about_message">Ову апликацију је правила Данијела Караклић</string>
+    <string name="dialog_about_yes">У реду</string>
+    <string name="dialog_about_no">Одустани</string>
+
+    <string name="pref_sync">преф_синк</string>
+    <string name="pref_sync_title">Омогући синхронизацију</string>
+    <string name="pref_sync_summ">Омогући да апликација аутоматски синхронизује податке ако је Wi-fi мрежа доступна</string>
+    <string name="pref_syncConnectionType">Интервал синхронизације</string>
+    <string name="pref_sync_list">преф_синк_лист</string>
+
+    <string name="detail_activity">Активност детаљ</string>
+    <string name="pref_edit">pref_edit</string>
+
+
+    <string name="drawer_open">Отворена навигациона фиока</string>
+    <string name="drawer_close">Затворена фиока</string>
+    <string name="drawer_home">Почетна страна</string>
+    <string name="drawer_home_long">Прикажи све </string>
+    <string name="drawer_settings">Подешавања</string>
+    <string name="drawer_Settings_long">Промените подешавања апликације</string>
+    <string name="drawer_about">О апликацији</string>
+    <string name="drawer_about_long">О нама</string>
+    <string name="navigation_re_long">Show all Real Estate</string>
+    <string name="dialog_in_name">Name</string>
+    <string name="dialog_in_description">Description</string>
+    <string name="dialog_in_image">Image</string>
+    <string name="dialog_in_adress">Adress</string>
+    <string name="dialog_in_telephone">Telephone</string>
+    <string name="dialog_in_quadrature">Quadrature</string>
+    <string name="dialog_in_room">Room</string>
+    <string name="dialog_in_price">Price</string>
+    <string name="btn_dialog_in_ok">OK</string>
+    <string name="btn_dialog_in_cancel">CANCEL</string>
+    <string name="drawer_home_open">Navigation Drawer open</string>
+    <string name="drawer_home_close">Navigation Drawer close</string>
+    <string name="navigation_drawer_open">Navigation Drawer open</string>
+    <string name="navigation_drawer_close">Navigation Drawer close</string>
+
+</resources>

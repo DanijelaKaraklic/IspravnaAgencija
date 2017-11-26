@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AgencijaZaNekretnine.iml" filepath="$PROJECT_DIR$/AgencijaZaNekretnine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IspravnaAgencija.iml" filepath="$PROJECT_DIR$/IspravnaAgencija.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NavigatioDrawerAttempt.iml" filepath="$PROJECT_DIR$/NavigatioDrawerAttempt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Polaganje.iml" filepath="$PROJECT_DIR$/Polaganje.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ZavrsniZadatak.iml" filepath="$PROJECT_DIR$/ZavrsniZadatak.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
