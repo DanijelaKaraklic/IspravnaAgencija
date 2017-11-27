@@ -50,6 +50,8 @@
     <string name="drawer_home_close">Navigation Drawer close</string>
     <string name="navigation_drawer_open">Navigation Drawer open</string>
     <string name="navigation_drawer_close">Navigation Drawer close</string>
+    <string name="second_menu_edit">Edit</string>
+    <string name="second_menu_delete">Delete</string>
 
 
 </resources>

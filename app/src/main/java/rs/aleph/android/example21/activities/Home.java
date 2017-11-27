@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -136,7 +137,7 @@ public class Home extends AppCompatActivity
     }
 
 
-    private void refresh(){
+    private  void refresh(){
         ListView listview = (ListView) findViewById(R.id.real_estates);
 
         if (listview != null){
@@ -286,12 +287,12 @@ public class Home extends AppCompatActivity
 
     private void selectPicture(){
         Intent intent = new Intent();
-        intent.setType("image*//*");
+        intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
-    public String imagePath(){
+    public  String imagePath(){
         selectPicture();
         String path = getIntent().getExtras().getString("selectedImagePath");
         //onActivityResult(int requestCode, int resultCode, Intent data);
@@ -309,7 +310,7 @@ public class Home extends AppCompatActivity
 
 
 
-               /* Dialog dialog = new Dialog(Home.this);
+                Dialog dialog = new Dialog(Home.this);
                 dialog.setContentView(R.layout.image_dialog);
                 dialog.setTitle("Image dialog");
 
@@ -323,7 +324,7 @@ public class Home extends AppCompatActivity
                     dialog.show();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }*/
+                }
             }
         }
     }
@@ -402,19 +403,18 @@ public class Home extends AppCompatActivity
                         Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
                     }
 
-                    btnImage.setOnClickListener(new View.OnClickListener() {
+                    /*btnImage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String path = null;
-                            imagePath();
+                            String path = imagePath();
                             realEstate.setmImage(path);
                         }
-                    });
+                    });*/
 
 
                     realEstate.setmName(editName.getText().toString());
                     realEstate.setmDescription(editDescription.getText().toString());
-                    
+
                     realEstate.setmAdress(editAdress.getText().toString());
                     realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
                     realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));

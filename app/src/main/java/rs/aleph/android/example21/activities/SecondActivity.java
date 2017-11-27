@@ -1,8 +1,10 @@
 package rs.aleph.android.example21.activities;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
@@ -33,11 +40,23 @@ public class SecondActivity extends AppCompatActivity
 
     private static final String TAG = "PERMISSIONS";
 
-    DrawerLayout drawer;
-    NavigationView navigationView;
-    Toolbar toolbar=null;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private Toolbar toolbar = null;
+
+    private EditText editName;
+    private EditText editDescription;
+    private Button btnImage;
+    private ImageView ivImage;
+    private EditText editAdress;
+    private EditText editTel;
+    private EditText editQuad;
+    private EditText editRoom;
+    private EditText editPrice;
+
 
     private DatabaseHelper databaseHelper;
+    private RealEstate realEstate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +86,93 @@ public class SecondActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        //prikaz u second activity svih podataka
         long id = getIntent().getExtras().getLong(Home.REAL_ESTATE);
         try {
-            RealEstate realEstate = getDatabaseHelper().getRealEstateDao().queryForId((int)id);
+            realEstate = getDatabaseHelper().getRealEstateDao().queryForId((int) id);
+            editName = (EditText) findViewById(R.id.re_name);
+            editDescription = (EditText) findViewById(R.id.re_description);
+            ivImage = (ImageView) findViewById(R.id.re_image);
+            editAdress = (EditText) findViewById(R.id.re_adress);
+            editTel = (EditText) findViewById(R.id.re_telephone);
+            editQuad = (EditText) findViewById(R.id.re_quad);
+            editRoom = (EditText) findViewById(R.id.re_room);
+            editPrice = (EditText) findViewById(R.id.re_price);
+
+            editName.setText(realEstate.getmName());
+            editDescription.setText(realEstate.getmDescription());
+            editAdress.setText(realEstate.getmAdress());
+            editTel.setText(String.valueOf(realEstate.getmTel()));
+            editTel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent call = new Intent(Intent.ACTION_CALL);
+                    call.setData(Uri.parse("tel:" + String.valueOf(realEstate.getmTel())));
+
+                if (isStoragePermissionGranted()){
+                    startActivity(call);
+                }
+
+                }
+            });
+            /*editTel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });*/
+            /*String imgPath = realEstate.getmImage();
+            Uri uri = Uri.parse(imgPath);
+            Bitmap b =MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+            ivImage.setImageBitmap(b);*/
+
+            double q = realEstate.getmQuadrature();
+            editQuad.setText(String.valueOf(q));
+            editRoom.setText(String.valueOf(realEstate.getmRoom()));
+            editPrice.setText(String.valueOf(realEstate.getmPrice()));
         } catch (SQLException e) {
             e.printStackTrace();
+        } /*catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
-
+*/
 
     }
+
+    private void refresh(){
+        //realEstate = getDatabaseHelper().getRealEstateDao().queryForId((int)id);
+        editName = (EditText) findViewById(R.id.re_name);
+        editDescription = (EditText) findViewById(R.id.re_description);
+        ivImage= (ImageView) findViewById(R.id.re_image);
+        editAdress = (EditText) findViewById(R.id.re_adress);
+        editTel = (EditText) findViewById(R.id.re_telephone);
+        editQuad = (EditText) findViewById(R.id.re_quad);
+        editRoom = (EditText) findViewById(R.id.re_room);
+        editPrice = (EditText) findViewById(R.id.re_price);
+
+        editName.setText(realEstate.getmName());
+        editDescription.setText(realEstate.getmDescription());
+        editAdress.setText(realEstate.getmAdress());
+        editTel.setText(String.valueOf(realEstate.getmTel()));
+            /*editTel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });*/
+            /*String imgPath = realEstate.getmImage();
+            Uri uri = Uri.parse(imgPath);
+            Bitmap b =MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+            ivImage.setImageBitmap(b);*/
+
+        double q = realEstate.getmQuadrature();
+        editQuad.setText(String.valueOf(q));
+        editRoom.setText(String.valueOf(realEstate.getmRoom()));
+        editPrice.setText(String.valueOf(realEstate.getmPrice()));
+
+}
 
 
     /**
@@ -96,6 +190,8 @@ public class SecondActivity extends AppCompatActivity
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED &&
                     checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.CALL_PHONE)
                             == PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG,"Permission is granted");
                 return true;
@@ -103,7 +199,7 @@ public class SecondActivity extends AppCompatActivity
 
                 Log.v(TAG,"Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                        Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CALL_PHONE}, 1);
                 return false;
             }
         }
@@ -123,7 +219,8 @@ public class SecondActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[2]== PackageManager.PERMISSION_GRANTED){
             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
         }
     }
@@ -145,21 +242,218 @@ public class SecondActivity extends AppCompatActivity
         return true;
     }
 
+
+ /*   private void selectPicture(){
+        Intent intent = new Intent();
+        intent.setType("image*//*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
+    public  String imagePath(){
+        selectPicture();
+        String path = getIntent().getExtras().getString("selectedImagePath");
+        //onActivityResult(int requestCode, int resultCode, Intent data);
+        return path;
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                String selectedImagePath = selectedImageUri.getPath();
+                data.putExtra("selectedImagePath",selectedImagePath);
+
+
+
+
+                Dialog dialog = new Dialog(Home.this);
+                dialog.setContentView(R.layout.image_dialog);
+                dialog.setTitle("Image dialog");
+
+                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    image.setImageBitmap(bitmap);
+                    Toast.makeText(this, selectedImageUri.getPath(), Toast.LENGTH_SHORT).show();
+
+                    dialog.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }*/
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id){
+            case R.id.action_edit:
+                final Dialog dialog = new Dialog(SecondActivity.this);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if (id == R.id.action_add){
-            return true;
+                dialog.setContentView(R.layout.dialog_layout);
+
+                dialog.setTitle("Update an actor");
+
+                Button ok = (Button) dialog.findViewById(R.id.ok);
+                ok.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+
+                        editName = (EditText) dialog.findViewById(R.id.re_name);
+                        editDescription = (EditText) dialog.findViewById(R.id.re_description);
+                        btnImage = (Button) dialog.findViewById(R.id.btn_image);
+                        editAdress = (EditText) dialog.findViewById(R.id.re_adress);
+                        editTel = (EditText) dialog.findViewById(R.id.re_telephone);
+                        editQuad = (EditText) dialog.findViewById(R.id.re_quad);
+                        editRoom = (EditText) dialog.findViewById(R.id.re_room);
+                        editPrice = (EditText) dialog.findViewById(R.id.re_price);
+
+
+                        if (!editName.getText().toString().isEmpty()){
+                            realEstate.setmName(editName.getText().toString());
+                            //Toast.makeText(SecondActivity.this, "Name can't be empty.",Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        if (!editDescription.getText().toString().equals("")){
+                            realEstate.setmDescription(editDescription.getText().toString());
+                            //Toast.makeText(SecondActivity.this, "Description can't be empty.",Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                        if (!editAdress.getText().toString().equals("")){
+                            realEstate.setmAdress(editAdress.getText().toString());
+                           // Toast.makeText(SecondActivity.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        int tel =0;
+                        try {
+                            tel = Integer.parseInt(editTel.getText().toString());
+                            realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
+
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(SecondActivity.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+                        int room =0;
+                        try {
+                            if (!editRoom.getText().toString().isEmpty()){
+                                room = Integer.parseInt(editRoom.getText().toString());
+                                realEstate.setmRoom(Integer.parseInt(editRoom.getText().toString()));
+
+                            }
+
+
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(SecondActivity.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+                        double quad =0.0;
+                        try {
+                            if (!editQuad.getText().toString().isEmpty()){
+                                quad = Double.parseDouble(editQuad.getText().toString());
+                                realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));
+
+                            }
+
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(SecondActivity.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+                        double price =0.0;
+                        try {
+                            if (!editTel.getText().toString().isEmpty())
+                            price = Integer.parseInt(editTel.getText().toString());
+                            realEstate.setmPrice(Double.parseDouble(editPrice.getText().toString()));
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(SecondActivity.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+
+                        /*btnImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String path = imagePath();
+                                realEstate.setmImage(path);
+                            }
+                        });*/
+
+
+                        try {
+                            getDatabaseHelper().getRealEstateDao().update(realEstate);
+                            refresh();
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        dialog.dismiss();
+
+
+                    }
+                });
+
+                Button cancel = (Button) dialog.findViewById(R.id.cancel);
+                cancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                    }
+                });
+
+                dialog.show();
+                break;
+            case R.id.action_delete:
+                final Dialog deleteDia = new Dialog(SecondActivity.this);
+                deleteDia.setContentView(R.layout.dialog_delete);
+
+                deleteDia.setTitle("Delete an actor");
+
+                Button ok1 =(Button)deleteDia.findViewById(R.id.ok);
+                ok1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            getDatabaseHelper().getRealEstateDao().delete(realEstate);
+                            finish();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                Button cancel1 = (Button)deleteDia.findViewById(R.id.cancel);
+                cancel1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDia.dismiss();
+                    }
+                });
+
+
+                deleteDia.show();
+
+                break;
+
         }
+        //noinspection SimplifiableIfStatement
+
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
