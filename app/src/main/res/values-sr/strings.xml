@@ -6,25 +6,25 @@
     <string name="activity_main_name">Главна активност</string>
     <string name="activity_main_toolbar_title">Главна активност</string>
 
-    <string name="activity_settings_name">Подешавања</string>
+   <!-- <string name="activity_settings_name">Подешавања</string>
 
     <string name="fragment_detail_buy">Купи</string>
+-->
 
 
 
-
-    <string name="dialog_about_title">О апликацији</string>
+   <!-- <string name="dialog_about_title">О апликацији</string>
     <string name="dialog_about_message">Ову апликацију је правила Данијела Караклић</string>
     <string name="dialog_about_yes">У реду</string>
-    <string name="dialog_about_no">Одустани</string>
+    <string name="dialog_about_no">Одустани</string>-->
 
-    <string name="pref_sync">преф_синк</string>
+    <!--<string name="pref_sync">преф_синк</string>
     <string name="pref_sync_title">Омогући синхронизацију</string>
     <string name="pref_sync_summ">Омогући да апликација аутоматски синхронизује податке ако је Wi-fi мрежа доступна</string>
     <string name="pref_syncConnectionType">Интервал синхронизације</string>
     <string name="pref_sync_list">преф_синк_лист</string>
 
-    <string name="detail_activity">Активност детаљ</string>
+    <string name="detail_activity">Активност детаљ</string>-->
     <string name="pref_edit">pref_edit</string>
 
 
@@ -36,37 +36,39 @@
     <string name="drawer_Settings_long">Промените подешавања апликације</string>
     <string name="drawer_about">О апликацији</string>
     <string name="drawer_about_long">О нама</string>
-    <string name="navigation_re_long">Show all Real Estate</string>
-    <string name="dialog_in_name">Name</string>
-    <string name="dialog_in_description">Description</string>
-    <string name="dialog_in_image">Image</string>
-    <string name="dialog_in_adress">Adress</string>
-    <string name="dialog_in_telephone">Telephone</string>
-    <string name="dialog_in_quadrature">Quadrature</string>
-    <string name="dialog_in_room">Room</string>
-    <string name="dialog_in_price">Price</string>
-    <string name="btn_dialog_in_ok">OK</string>
-    <string name="btn_dialog_in_cancel">CANCEL</string>
-    <string name="drawer_home_open">Navigation Drawer open</string>
-    <string name="drawer_home_close">Navigation Drawer close</string>
-    <string name="navigation_drawer_open">Navigation Drawer open</string>
-    <string name="navigation_drawer_close">Navigation Drawer close</string>
-    <string name="second_menu_edit">Edit</string>
-    <string name="second_menu_delete">Delete</string>
-    <string name="second_to_schedule">To schedule</string>
-    <string name="pref_toast_sum">Allow showing toast messages</string>
-    <string name="pref_toast_title">Allow_toast</string>
-    <string name="pref_notif_sum">Allow showing notification messages</string>
-    <string name="pref_notif_title">Allow notification</string>
-    <string name="notif_schedule">You\'ve scheduled sightseing of real estate.</string>
-    <string name="notif_schedule_title">To schedule</string>
-    <string name="sec_mess_update">You\'ve updated real estate</string>
-    <string name="sec_mess_up_title">Update real estate</string>
-    <string name="sec_mess_delete">You\'ve deleted real estate</string>
-    <string name="sec_mess_del_title">Delete real estate</string>
-    <string name="first_mess_add">You\'ve added new real estate</string>
-    <string name="first_mess_title">Add a real estate</string>
-    <string name="activity_home_name">Real estates</string>
-    <string name="second_activity_name">Second Activity</string>
+    <string name="navigation_re_long">Прикажи све некретнине</string>
+    <string name="dialog_in_name">Име</string>
+    <string name="dialog_in_description">Опис</string>
+    <string name="dialog_in_image">Слика</string>
+    <string name="dialog_in_adress">Адреса</string>
+    <string name="dialog_in_telephone">Телефон</string>
+    <string name="dialog_in_quadrature">Квадратура</string>
+    <string name="dialog_in_room">Соба</string>
+    <string name="dialog_in_price">Цена</string>
+    <string name="btn_dialog_in_ok">ОК</string>
+    <string name="btn_dialog_in_cancel">ОТКАЖИ</string>
+    <string name="drawer_home_open">Отворена навигациона фиока</string>
+    <string name="drawer_home_close">Затворена навигациона фиока</string>
+    <string name="navigation_drawer_open">Отворена навигациона фиока</string>
+    <string name="navigation_drawer_close">Затворена навигациона фиока</string>
+    <string name="second_menu_edit">Измени</string>
+    <string name="second_menu_delete">Обриши</string>
+    <string name="second_to_schedule">Закажи</string>
+    <string name="pref_toast_sum">Дозволи приказ тоаст поруке</string>
+    <string name="pref_toast_title">Дозволи тоаст</string>
+    <string name="pref_notif_sum">Дозволи приказ нотификација</string>
+    <string name="pref_notif_title">Дозволи нотификацију</string>
+    <string name="notif_schedule">Закаѕали сте раѕгледање некретнине</string>
+    <string name="notif_schedule_title">Закажи</string>
+    <string name="sec_mess_update">Ажурирали сте некретнину</string>
+    <string name="sec_mess_up_title">Ажурирај некретнину</string>
+    <string name="sec_mess_delete">Избрисали сте некретнину</string>
+    <string name="sec_mess_del_title">Избриши некретнину</string>
+    <string name="first_mess_add">Додали сте нову некретнину</string>
+    <string name="first_mess_title">Додај некретнину</string>
+    <string name="activity_home_name">Некретнине</string>
+    <string name="second_activity_name">Друга активност</string>
+    <string name="nav_all_real_estates">Све некретнине</string>
+    <string name="nav_settings">Подешавања</string>
 
 </resources>

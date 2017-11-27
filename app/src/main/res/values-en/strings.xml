@@ -70,6 +70,8 @@
     <string name="first_mess_title">Add a real estate</string>
     <string name="activity_home_name">Real estates</string>
     <string name="second_activity_name">Second Activity</string>
+    <string name="nav_all_real_estates">All real estates</string>
+    <string name="nav_settings">Settings</string>
 
 
 </resources>
