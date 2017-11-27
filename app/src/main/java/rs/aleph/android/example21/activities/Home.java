@@ -2,13 +2,17 @@ package rs.aleph.android.example21.activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +20,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +53,14 @@ import rs.aleph.android.example21.db.model.RealEstate;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String NOTIFICATION = "pref_notif";
+    public static final String TOAST = "pref_toast";
+    private SharedPreferences sharedPreferences;
+    private boolean toast;
+    private boolean notification;
+
+
     private static final int SELECT_PICTURE = 1;
 
     private static final String TAG = "PERMISSIONS";
@@ -69,6 +82,8 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         List<RealEstate> listRs1 = new ArrayList<>();
         try {
@@ -126,6 +141,31 @@ public class Home extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+    }
+    private void showNotification(String title,String message){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_real_estates);
+        builder.setSmallIcon(R.drawable.ic_action_real_estates);
+        builder.setContentTitle(title);
+        builder.setContentText(message);
+        builder.setLargeIcon(bitmap);
+
+        // Shows notification with the notification manager (notification ID is used to update the notification later on)
+        //umesto this aktivnost
+        NotificationManager manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
+    }
+
+    private void showMessage(String message,String title){
+        toast = sharedPreferences.getBoolean(TOAST,false);
+        notification = sharedPreferences.getBoolean(NOTIFICATION,false);
+        if (toast){
+            Toast.makeText(this, message,Toast.LENGTH_SHORT).show();
+        }
+        if (notification){
+            showNotification(message,title);
+        }
 
     }
 
@@ -463,27 +503,9 @@ public class Home extends AppCompatActivity
                 startActivity(h);
                 break;
             case R.id.nav_settings:
-                Intent i = new Intent(Home.this,SecondActivity.class);
+                Intent i = new Intent(Home.this,SettingsActivity.class);
                 startActivity(i);
-            //pozivaju se aktivnosti koje su u navigation draweru
-           /* case R.id.nav_import:
-                Intent i= new Intent(Home.this,Import.class);
-                startActivity(i);
-                break;
-            case R.id.nav_gallery:
-                Intent g= new Intent(Home.this,Gallery.class);
-                startActivity(g);
-                break;
-            case R.id.nav_slideshow:
-                Intent s= new Intent(Home.this,Slideshow.class);
-                startActivity(s);
-            case R.id.nav_tools:
-                Intent t= new Intent(Home.this,Tools.class);
-                startActivity(t);
-                break;*/
-            // this is done, now let us go and intialise the home page.
-            // after this lets start copying the above.
-            // FOLLOW MEEEEE>>>
+
         }
 
 

@@ -577,7 +577,7 @@ public class MainActivity extends AppCompatActivity{
 
                         final EditText editName = (EditText) dialog.findViewById(R.id.re_name);
                         final EditText editDescription = (EditText) dialog.findViewById(R.id.re_description);
-                        final EditText editImage = (EditText) dialog.findViewById(R.id.re_image);
+                       // final EditText editImage = (EditText) dialog.findViewById(R.id.re_image);
                         final EditText editAdress = (EditText) dialog.findViewById(R.id.re_adress);
                         final EditText editTel = (EditText) dialog.findViewById(R.id.re_telephone);
                         final EditText editQuad = (EditText) dialog.findViewById(R.id.re_quad);
@@ -586,7 +586,7 @@ public class MainActivity extends AppCompatActivity{
 
                         realEstate.setmName(editName.getText().toString());
                         realEstate.setmDescription(editDescription.getText().toString());
-                        realEstate.setmImage(editImage.getText().toString());
+                        //realEstate.setmImage(editImage.getText().toString());
                         realEstate.setmAdress(editAdress.getText().toString());
                         realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
                         realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));

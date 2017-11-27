@@ -103,6 +103,15 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"/>
 
+    <Button
+        android:id="@+id/btn_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/second_to_schedule"
+        android:textAllCaps="true"/>
+
+
+
 </LinearLayout>
 
 

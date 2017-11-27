@@ -55,6 +55,13 @@
     <string name="navigation_drawer_close">Navigation Drawer close</string>
     <string name="second_menu_edit">Edit</string>
     <string name="second_menu_delete">Delete</string>
+    <string name="second_to_schedule">To schedule</string>
+    <string name="pref_toast_sum">Allow showing toast messages</string>
+    <string name="pref_toast_title">Allow_toast</string>
+    <string name="pref_notif_sum">Allow showing notification messages</string>
+    <string name="pref_notif_title">Allow notification</string>
+    <string name="notif_schedule">You\'ve scheduled sightseing of real estate.</string>
+    <string name="notif_schedule_title">To schedule</string>
 
 
 </resources>

@@ -2,17 +2,24 @@ package rs.aleph.android.example21.activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -54,6 +61,10 @@ public class SecondActivity extends AppCompatActivity
     private EditText editRoom;
     private EditText editPrice;
 
+    private boolean toast;
+    private boolean notification;
+    private SharedPreferences sharedPreferences;
+
 
     private DatabaseHelper databaseHelper;
     private RealEstate realEstate;
@@ -64,6 +75,8 @@ public class SecondActivity extends AppCompatActivity
         setContentView(R.layout.activity_second);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //We dont need this.
 
@@ -130,6 +143,19 @@ public class SecondActivity extends AppCompatActivity
             editQuad.setText(String.valueOf(q));
             editRoom.setText(String.valueOf(realEstate.getmRoom()));
             editPrice.setText(String.valueOf(realEstate.getmPrice()));
+
+            Button button = (Button)findViewById(R.id.btn_schedule);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toast = sharedPreferences.getBoolean(Home.TOAST,false);
+                    notification = sharedPreferences.getBoolean(Home.NOTIFICATION,false);
+
+                    if (notification){
+                        showNotification(getString(R.string.notif_schedule),getString(R.string.notif_schedule_title));
+                    }
+                }
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         } /*catch (FileNotFoundException e) {
@@ -138,6 +164,32 @@ public class SecondActivity extends AppCompatActivity
             e.printStackTrace();
         }
 */
+
+    }
+
+    private void showNotification(String title,String message){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_real_estates);
+        builder.setSmallIcon(R.drawable.ic_action_real_estates);
+        builder.setContentTitle(title);
+        builder.setContentText(message);
+        builder.setLargeIcon(bitmap);
+
+        // Shows notification with the notification manager (notification ID is used to update the notification later on)
+        //umesto this aktivnost
+        NotificationManager manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
+    }
+
+    private void showMessage(String message,String title){
+        toast = sharedPreferences.getBoolean(Home.TOAST,false);
+        notification = sharedPreferences.getBoolean(Home.NOTIFICATION,false);
+        if (toast){
+            Toast.makeText(this, message,Toast.LENGTH_SHORT).show();
+        }
+        if (notification){
+            showNotification(message,title);
+        }
 
     }
 
@@ -423,6 +475,7 @@ public class SecondActivity extends AppCompatActivity
                     public void onClick(View v) {
                         try {
                             getDatabaseHelper().getRealEstateDao().delete(realEstate);
+                            deleteDia.dismiss();
                             finish();
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -468,6 +521,10 @@ public class SecondActivity extends AppCompatActivity
                 Intent h= new Intent(SecondActivity.this,Home.class);
                 startActivity(h);
                 break;
+            case R.id.nav_settings:
+                Intent i = new Intent(SecondActivity.this,SettingsActivity.class);
+                break;
+
            /* case R.id.nav_import:
                 Intent i= new Intent(Import.this,Import.class);
                 startActivity(i);
