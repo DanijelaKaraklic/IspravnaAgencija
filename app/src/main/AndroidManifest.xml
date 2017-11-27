@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="rs.aleph.android.example21.activities.Home"
-            android:label="Home"
+            android:label="@string/activity_home_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="rs.aleph.android.example21.activities.SecondActivity"
-            android:label="Second Activity"
+            android:label="@string/second_activity_name"
             android:icon="@mipmap/ic_launcher"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

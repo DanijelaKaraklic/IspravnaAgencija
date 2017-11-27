@@ -439,6 +439,7 @@ public class SecondActivity extends AppCompatActivity
 
                         try {
                             getDatabaseHelper().getRealEstateDao().update(realEstate);
+                            showMessage(getString(R.string.sec_mess_update),getString(R.string.sec_mess_up_title));
                             refresh();
 
                         } catch (SQLException e) {
@@ -475,6 +476,7 @@ public class SecondActivity extends AppCompatActivity
                     public void onClick(View v) {
                         try {
                             getDatabaseHelper().getRealEstateDao().delete(realEstate);
+                            showMessage(getString(R.string.sec_mess_delete),getString(R.string.sec_mess_del_title));
                             deleteDia.dismiss();
                             finish();
                         } catch (SQLException e) {
@@ -525,25 +527,7 @@ public class SecondActivity extends AppCompatActivity
                 Intent i = new Intent(SecondActivity.this,SettingsActivity.class);
                 break;
 
-           /* case R.id.nav_import:
-                Intent i= new Intent(Import.this,Import.class);
-                startActivity(i);
-                break;
-            case R.id.nav_gallery:
-                Intent g= new Intent(Import.this,Gallery.class);
-                startActivity(g);
-                break;
-            case R.id.nav_slideshow:
-                Intent s= new Intent(Import.this,Slideshow.class);
-                startActivity(s);
-            case R.id.nav_tools:
-                Intent t= new Intent(Import.this,Tools.class);
-                startActivity(t);
-                break;*/
 
-            // after this lets start copying the above.
-            // FOLLOW MEEEEE>>>
-            //copy this now.
         }
 
 

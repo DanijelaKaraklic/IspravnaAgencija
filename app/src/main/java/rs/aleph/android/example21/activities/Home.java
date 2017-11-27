@@ -376,72 +376,70 @@ public class Home extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch(id){
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if (id == R.id.action_add){
-            final Dialog dialog = new Dialog(Home.this);
+            case R.id.action_add:
+                final Dialog dialog = new Dialog(Home.this);
 
-            dialog.setContentView(R.layout.dialog_layout);
+                dialog.setContentView(R.layout.dialog_layout);
 
-            dialog.setTitle("Insert an actor");
+                dialog.setTitle("Insert an actor");
 
-            Button ok = (Button) dialog.findViewById(R.id.ok);
-            ok.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
+                Button ok = (Button) dialog.findViewById(R.id.ok);
+                ok.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
 
-                    final EditText editName = (EditText) dialog.findViewById(R.id.re_name);
-                    final EditText editDescription = (EditText) dialog.findViewById(R.id.re_description);
-                    final Button btnImage = (Button) dialog.findViewById(R.id.btn_image);
-                    final EditText editAdress = (EditText) dialog.findViewById(R.id.re_adress);
-                    final EditText editTel = (EditText) dialog.findViewById(R.id.re_telephone);
-                    final EditText editQuad = (EditText) dialog.findViewById(R.id.re_quad);
-                    final EditText editRoom = (EditText) dialog.findViewById(R.id.re_room);
-                    final EditText editPrice = (EditText) dialog.findViewById(R.id.re_price);
-                    final RealEstate realEstate = new RealEstate();
+                        final EditText editName = (EditText) dialog.findViewById(R.id.re_name);
+                        final EditText editDescription = (EditText) dialog.findViewById(R.id.re_description);
+                        final Button btnImage = (Button) dialog.findViewById(R.id.btn_image);
+                        final EditText editAdress = (EditText) dialog.findViewById(R.id.re_adress);
+                        final EditText editTel = (EditText) dialog.findViewById(R.id.re_telephone);
+                        final EditText editQuad = (EditText) dialog.findViewById(R.id.re_quad);
+                        final EditText editRoom = (EditText) dialog.findViewById(R.id.re_room);
+                        final EditText editPrice = (EditText) dialog.findViewById(R.id.re_price);
+                        final RealEstate realEstate = new RealEstate();
 
-                    if (editName.getText().toString().isEmpty()){
-                        Toast.makeText(Home.this, "Name can't be empty.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                        if (editName.getText().toString().isEmpty()){
+                            Toast.makeText(Home.this, "Name can't be empty.",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                    if (editDescription.getText().toString().equals("")){
-                        Toast.makeText(Home.this, "Description can't be empty.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                        if (editDescription.getText().toString().equals("")){
+                            Toast.makeText(Home.this, "Description can't be empty.",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
 
-                    if (editAdress.getText().toString().equals("")){
-                        Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                        if (editAdress.getText().toString().equals("")){
+                            Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                    int tel =0;
-                    try {
-                        tel = Integer.parseInt(editTel.getText().toString());
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
-                    }
-                    int room =0;
-                    try {
-                        room = Integer.parseInt(editRoom.getText().toString());
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
-                    }
-                    double quad =0.0;
-                    try {
-                        quad = Double.parseDouble(editQuad.getText().toString());
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
-                    }
-                    double price =0.0;
-                    try {
-                        price = Integer.parseInt(editTel.getText().toString());
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
-                    }
+                        int tel =0;
+                        try {
+                            tel = Integer.parseInt(editTel.getText().toString());
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+                        int room =0;
+                        try {
+                            room = Integer.parseInt(editRoom.getText().toString());
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+                        double quad =0.0;
+                        try {
+                            quad = Double.parseDouble(editQuad.getText().toString());
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
+                        double price =0.0;
+                        try {
+                            price = Integer.parseInt(editTel.getText().toString());
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
+                        }
 
                     /*btnImage.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -452,40 +450,48 @@ public class Home extends AppCompatActivity
                     });*/
 
 
-                    realEstate.setmName(editName.getText().toString());
-                    realEstate.setmDescription(editDescription.getText().toString());
+                        realEstate.setmName(editName.getText().toString());
+                        realEstate.setmDescription(editDescription.getText().toString());
 
-                    realEstate.setmAdress(editAdress.getText().toString());
-                    realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
-                    realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));
-                    realEstate.setmRoom(Integer.parseInt(editRoom.getText().toString()));
-                    realEstate.setmPrice(Double.parseDouble(editPrice.getText().toString()));
+                        realEstate.setmAdress(editAdress.getText().toString());
+                        realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
+                        realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));
+                        realEstate.setmRoom(Integer.parseInt(editRoom.getText().toString()));
+                        realEstate.setmPrice(Double.parseDouble(editPrice.getText().toString()));
 
-                    try {
-                        getDatabaseHelper().getRealEstateDao().create(realEstate);
-                        refresh();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                        try {
+                            getDatabaseHelper().getRealEstateDao().create(realEstate);
+
+                            refresh();
+                            showMessage(getString(R.string.first_mess_add),getString(R.string.first_mess_title));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        dialog.dismiss();
+
+
                     }
+                });
+
+                Button cancel = (Button) dialog.findViewById(R.id.cancel);
+                cancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                    }
+                });
+
+                dialog.show();
 
 
-                    dialog.dismiss();
 
-
-                }
-            });
-
-            Button cancel = (Button) dialog.findViewById(R.id.cancel);
-            cancel.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-
-                }
-            });
-
-            dialog.show();
+                break;
         }
+        //noinspection SimplifiableIfStatement
+
 
         return super.onOptionsItemSelected(item);
     }

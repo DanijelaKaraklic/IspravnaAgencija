@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Navigation</string>
+    <string name="app_name">Agency</string>
 
     <string name="activity_main_name">Main Activity</string>
     <string name="activity_main_toolbar_title">Toolbar Title</string>
@@ -59,6 +59,14 @@
     <string name="pref_notif_title">Allow notification</string>
     <string name="notif_schedule">You\'ve scheduled sightseing of real estate.</string>
     <string name="notif_schedule_title">To schedule</string>
+    <string name="sec_mess_update">You\'ve updated real estate</string>
+    <string name="sec_mess_up_title">Update real estate</string>
+    <string name="sec_mess_delete">You\'ve deleted real estate</string>
+    <string name="sec_mess_del_title">Delete real estate</string>
+    <string name="first_mess_add">You\'ve added new real estate</string>
+    <string name="first_mess_title">Add a real estate</string>
+    <string name="activity_home_name">Real estates</string>
+    <string name="second_activity_name">Second Activity</string>
 
 
 </resources>
