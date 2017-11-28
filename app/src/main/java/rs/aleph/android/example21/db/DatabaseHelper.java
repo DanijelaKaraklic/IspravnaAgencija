@@ -25,10 +25,10 @@ import rs.aleph.android.example21.db.model.RealEstate;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     //Dajemo ime bazi
-    private static final String DATABASE_NAME    = "ormlite4.db";
+    private static final String DATABASE_NAME    = "ormlite5.db";
 
     //i pocetnu verziju baze. Obicno krece od 1
-    private static final int    DATABASE_VERSION = 4;
+    private static final int    DATABASE_VERSION = 5;
 
     private Dao<RealEstate, Integer> mRealEstateDao = null;
 

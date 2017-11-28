@@ -38,9 +38,7 @@ import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import rs.aleph.android.example21.R;
@@ -59,6 +57,8 @@ public class Home extends AppCompatActivity
     private SharedPreferences sharedPreferences;
     private boolean toast;
     private boolean notification;
+    private String imagePath = null;
+    private ImageView preview;
 
 
     private static final int SELECT_PICTURE = 1;
@@ -85,7 +85,7 @@ public class Home extends AppCompatActivity
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        List<RealEstate> listRs1 = new ArrayList<>();
+    /*    List<RealEstate> listRs1 = new ArrayList<>();
         try {
             listRs1 = getDatabaseHelper().getRealEstateDao().queryForAll();
             if (listRs1 == null){
@@ -100,7 +100,7 @@ public class Home extends AppCompatActivity
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         final ListView listView = (ListView)findViewById(R.id.real_estates);
@@ -169,12 +169,12 @@ public class Home extends AppCompatActivity
 
     }
 
-    private void insertToExternalStorage(String nameImage) throws IOException {
+   /* private void insertToExternalStorage(String nameImage) throws IOException {
         InputStream is = null;
         is = getAssets().open(nameImage);
         Bitmap bitmap = BitmapFactory.decodeStream(is);
         MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,nameImage,"jpg");
-    }
+    }*/
 
 
     private  void refresh(){
@@ -332,41 +332,40 @@ public class Home extends AppCompatActivity
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
-    public  String imagePath(){
-        selectPicture();
-        String path = getIntent().getExtras().getString("selectedImagePath");
-        //onActivityResult(int requestCode, int resultCode, Intent data);
-        return path;
-    }
+
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
-                String selectedImagePath = selectedImageUri.getPath();
-                data.putExtra("selectedImagePath",selectedImagePath);
 
-
-
-
-                Dialog dialog = new Dialog(Home.this);
-                dialog.setContentView(R.layout.image_dialog);
-                dialog.setTitle("Image dialog");
-
-                ImageView image = (ImageView) dialog.findViewById(R.id.image);
 
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                    image.setImageBitmap(bitmap);
-                    Toast.makeText(this, selectedImageUri.getPath(), Toast.LENGTH_SHORT).show();
 
-                    dialog.show();
+                    if (selectedImageUri != null){
+                        imagePath = selectedImageUri.toString();
+                    }
+                    if (preview != null){
+                        preview.setImageBitmap(bitmap);
+                    }
+
+
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+
+
+    }
+
+    private void reset(){
+        preview = null;
+        imagePath = "";
     }
 
 
@@ -392,7 +391,17 @@ public class Home extends AppCompatActivity
 
                         final EditText editName = (EditText) dialog.findViewById(R.id.re_name);
                         final EditText editDescription = (EditText) dialog.findViewById(R.id.re_description);
+
                         final Button btnImage = (Button) dialog.findViewById(R.id.btn_image);
+                        btnImage.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                preview = (ImageView)dialog.findViewById(R.id.ivImage);
+                                selectPicture();
+                            }
+                        });
+
                         final EditText editAdress = (EditText) dialog.findViewById(R.id.re_adress);
                         final EditText editTel = (EditText) dialog.findViewById(R.id.re_telephone);
                         final EditText editQuad = (EditText) dialog.findViewById(R.id.re_quad);
@@ -440,19 +449,16 @@ public class Home extends AppCompatActivity
                         } catch (NumberFormatException e) {
                             Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
                         }
-
-                    /*btnImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String path = imagePath();
-                            realEstate.setmImage(path);
+                        if (imagePath.isEmpty() || preview==null){
+                            Toast.makeText(Home.this, "Image must be chsen.",Toast.LENGTH_SHORT).show();
                         }
-                    });*/
 
+
+                    //    Picasso.with(Home.this).load("https://www.google.rs/search?q=house+images+jpg&biw=1339&bih=557&tbs=isz:ex,iszw:256,iszh:256&tbm=isch&source=lnt#imgrc=oWRRKDgKIojrzM:").into(image);
 
                         realEstate.setmName(editName.getText().toString());
                         realEstate.setmDescription(editDescription.getText().toString());
-
+                        realEstate.setmImage(imagePath);
                         realEstate.setmAdress(editAdress.getText().toString());
                         realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
                         realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));
@@ -461,6 +467,7 @@ public class Home extends AppCompatActivity
 
                         try {
                             getDatabaseHelper().getRealEstateDao().create(realEstate);
+                            reset();
 
                             refresh();
                             showMessage(getString(R.string.first_mess_add),getString(R.string.first_mess_title));

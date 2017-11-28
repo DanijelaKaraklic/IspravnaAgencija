@@ -15,7 +15,7 @@ public class AboutDialog extends AlertDialog.Builder{
 		
 		setTitle(R.string.dialog_about_title);
 	    setMessage(R.string.dialog_about_message);
-	    setCancelable(false);
+	    setCancelable(true);
 	    
 	    setPositiveButton(R.string.dialog_about_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {

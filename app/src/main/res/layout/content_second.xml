@@ -48,6 +48,7 @@
         android:id="@+id/re_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="fullImage"
         android:textSize="16sp"/>
     <TextView
         android:layout_width="match_parent"

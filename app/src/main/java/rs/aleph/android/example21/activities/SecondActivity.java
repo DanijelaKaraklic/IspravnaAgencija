@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.squareup.picasso.Picasso;
 
 import java.sql.SQLException;
 
@@ -144,6 +145,11 @@ public class SecondActivity extends AppCompatActivity
             editRoom.setText(String.valueOf(realEstate.getmRoom()));
             editPrice.setText(String.valueOf(realEstate.getmPrice()));
 
+            Uri uri = Uri.parse(realEstate.getmImage());
+            ivImage.setImageURI(uri);
+
+
+
             Button button = (Button)findViewById(R.id.btn_schedule);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -164,6 +170,25 @@ public class SecondActivity extends AppCompatActivity
             e.printStackTrace();
         }
 */
+
+    }
+
+    private void fullImage(View view){
+        final Dialog dialog = new Dialog(SecondActivity.this);
+        dialog.setContentView(R.layout.dialog_full_image);
+
+        ImageView image = (ImageView)dialog.findViewById(R.id.full_image);
+        Uri uri = Uri.parse(realEstate.getmImage());
+        Picasso.with(SecondActivity.this).load(uri).into(image);
+
+        Button close = (Button)dialog.findViewById(R.id.btn_full);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
 
