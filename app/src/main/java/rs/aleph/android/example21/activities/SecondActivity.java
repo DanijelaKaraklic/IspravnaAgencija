@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.squareup.picasso.Picasso;
 
 import java.sql.SQLException;
 
@@ -79,17 +78,7 @@ public class SecondActivity extends AppCompatActivity
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //We dont need this.
 
-
-      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -129,24 +118,14 @@ public class SecondActivity extends AppCompatActivity
 
                 }
             });
-            /*editTel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });*/
-            /*String imgPath = realEstate.getmImage();
-            Uri uri = Uri.parse(imgPath);
-            Bitmap b =MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-            ivImage.setImageBitmap(b);*/
 
             double q = realEstate.getmQuadrature();
             editQuad.setText(String.valueOf(q));
             editRoom.setText(String.valueOf(realEstate.getmRoom()));
             editPrice.setText(String.valueOf(realEstate.getmPrice()));
 
-            Uri uri = Uri.parse(realEstate.getmImage());
-            ivImage.setImageURI(uri);
+
 
 
 
@@ -164,33 +143,11 @@ public class SecondActivity extends AppCompatActivity
             });
         } catch (SQLException e) {
             e.printStackTrace();
-        } /*catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-*/
 
     }
 
-    private void fullImage(View view){
-        final Dialog dialog = new Dialog(SecondActivity.this);
-        dialog.setContentView(R.layout.dialog_full_image);
 
-        ImageView image = (ImageView)dialog.findViewById(R.id.full_image);
-        Uri uri = Uri.parse(realEstate.getmImage());
-        Picasso.with(SecondActivity.this).load(uri).into(image);
-
-        Button close = (Button)dialog.findViewById(R.id.btn_full);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
 
     private void showNotification(String title,String message){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -233,16 +190,7 @@ public class SecondActivity extends AppCompatActivity
         editDescription.setText(realEstate.getmDescription());
         editAdress.setText(realEstate.getmAdress());
         editTel.setText(String.valueOf(realEstate.getmTel()));
-            /*editTel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });*/
-            /*String imgPath = realEstate.getmImage();
-            Uri uri = Uri.parse(imgPath);
-            Bitmap b =MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-            ivImage.setImageBitmap(b);*/
 
         double q = realEstate.getmQuadrature();
         editQuad.setText(String.valueOf(q));
@@ -252,16 +200,7 @@ public class SecondActivity extends AppCompatActivity
 }
 
 
-    /**
-     * Od verzije Marshmallow Android uvodi pojam dinamickih permisija
-     * Sto korisnicima olaksva rad, a programerima uvodi dodadan posao.
-     * Cela ideja ja u tome, da se permisije ili prava da aplikcija
-     * nesto uradi, ne zahtevaju prilikom instalacije, nego prilikom
-     * prve upotrebe te funkcionalnosti. To za posledicu ima da mi
-     * svaki put moramo da proverimo da li je odredjeno pravo dopustneo
-     * ili ne. Iako nije da ponovo trazimo da korisnik dopusti, u protivnom
-     * tu funkcionalnost necemo obaviti uopste.
-     * */
+
     public  boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -286,12 +225,7 @@ public class SecondActivity extends AppCompatActivity
         }
     }
 
-    /**
-     *
-     * Ako odredjena funkcija nije dopustena, saljemo zahtev android
-     * sistemu da zahteva odredjene permisije. Korisniku seprikazuje
-     * diloag u kom on zeli ili ne da dopusti odedjene permisije.
-     */
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -320,49 +254,7 @@ public class SecondActivity extends AppCompatActivity
     }
 
 
- /*   private void selectPicture(){
-        Intent intent = new Intent();
-        intent.setType("image*//*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-    }
 
-    public  String imagePath(){
-        selectPicture();
-        String path = getIntent().getExtras().getString("selectedImagePath");
-        //onActivityResult(int requestCode, int resultCode, Intent data);
-        return path;
-    }
-
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-                Uri selectedImageUri = data.getData();
-                String selectedImagePath = selectedImageUri.getPath();
-                data.putExtra("selectedImagePath",selectedImagePath);
-
-
-
-
-                Dialog dialog = new Dialog(Home.this);
-                dialog.setContentView(R.layout.image_dialog);
-                dialog.setTitle("Image dialog");
-
-                ImageView image = (ImageView) dialog.findViewById(R.id.image);
-
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                    image.setImageBitmap(bitmap);
-                    Toast.makeText(this, selectedImageUri.getPath(), Toast.LENGTH_SHORT).show();
-
-                    dialog.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }*/
 
 
     @Override
@@ -386,7 +278,6 @@ public class SecondActivity extends AppCompatActivity
 
                         editName = (EditText) dialog.findViewById(R.id.re_name);
                         editDescription = (EditText) dialog.findViewById(R.id.re_description);
-                        btnImage = (Button) dialog.findViewById(R.id.btn_image);
                         editAdress = (EditText) dialog.findViewById(R.id.re_adress);
                         editTel = (EditText) dialog.findViewById(R.id.re_telephone);
                         editQuad = (EditText) dialog.findViewById(R.id.re_quad);
@@ -446,20 +337,13 @@ public class SecondActivity extends AppCompatActivity
                         }
                         double price =0.0;
                         try {
-                            if (!editTel.getText().toString().isEmpty())
+                            if (!editPrice.getText().toString().isEmpty())
                             price = Integer.parseInt(editTel.getText().toString());
                             realEstate.setmPrice(Double.parseDouble(editPrice.getText().toString()));
                         } catch (NumberFormatException e) {
                             Toast.makeText(SecondActivity.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
                         }
 
-                        /*btnImage.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String path = imagePath();
-                                realEstate.setmImage(path);
-                            }
-                        });*/
 
 
                         try {

@@ -9,11 +9,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -37,7 +35,6 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -85,22 +82,7 @@ public class Home extends AppCompatActivity
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-    /*    List<RealEstate> listRs1 = new ArrayList<>();
-        try {
-            listRs1 = getDatabaseHelper().getRealEstateDao().queryForAll();
-            if (listRs1 == null){
 
-                insertToExternalStorage("zamak_duga.jpg");
-                insertToExternalStorage("zamak.jpg");
-                insertToExternalStorage("zamak_prolece.jpg");
-                insertToExternalStorage("zimska_kuca.jpg");
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
 
         final ListView listView = (ListView)findViewById(R.id.real_estates);
@@ -169,12 +151,7 @@ public class Home extends AppCompatActivity
 
     }
 
-   /* private void insertToExternalStorage(String nameImage) throws IOException {
-        InputStream is = null;
-        is = getAssets().open(nameImage);
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-        MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,nameImage,"jpg");
-    }*/
+
 
 
     private  void refresh(){
@@ -218,16 +195,7 @@ public class Home extends AppCompatActivity
     }
 
 
-    /**
-     * Od verzije Marshmallow Android uvodi pojam dinamickih permisija
-     * Sto korisnicima olaksva rad, a programerima uvodi dodadan posao.
-     * Cela ideja ja u tome, da se permisije ili prava da aplikcija
-     * nesto uradi, ne zahtevaju prilikom instalacije, nego prilikom
-     * prve upotrebe te funkcionalnosti. To za posledicu ima da mi
-     * svaki put moramo da proverimo da li je odredjeno pravo dopustneo
-     * ili ne. Iako nije da ponovo trazimo da korisnik dopusti, u protivnom
-     * tu funkcionalnost necemo obaviti uopste.
-     * */
+
     public  boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -250,12 +218,7 @@ public class Home extends AppCompatActivity
         }
     }
 
-    /**
-     *
-     * Ako odredjena funkcija nije dopustena, saljemo zahtev android
-     * sistemu da zahteva odredjene permisije. Korisniku seprikazuje
-     * diloag u kom on zeli ili ne da dopusti odedjene permisije.
-     */
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -274,99 +237,10 @@ public class Home extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Da bi dobili pristup Galeriji slika na uredjaju
-     * moramo preko URI-ja pristupiti delu baze gde su smestene
-     * slike uredjaja. Njima mozemo pristupiti koristeci sistemski
-     * ContentProvider i koristeci URI images/* putanju
-     *
-     * Posto biramo sliku potrebno je da pozovemo aktivnost koja icekuje rezultat
-     * Kada dobijemo rezultat nazad prikazemo sliku i dobijemo njenu tacnu putanju
-     * */
-   /* private void selectPicture(){
-        Intent intent = new Intent();
-        intent.setType("image*//*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-    }*/
-
-    /**
-     * Sismtemska metoda koja se automatksi poziva ako se
-     * aktivnost startuje u startActivityForResult rezimu
-     *
-     * Ako je ti slucaj i ako je sve proslo ok, mozemo da izvucemo
-     * sadrzaj i to da prikazemo. Rezultat NIJE sliak nego URI do te slike.
-     * Na osnovu toga mozemo dobiti tacnu putnaju do slike ali i samu sliku
-     * */
-    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-                Uri selectedImageUri = data.getData();
-                //String selectedImagePath = selectedImageUri.getPath();
-
-                Dialog dialog = new Dialog(MainActivity.this);
-                dialog.setContentView(R.layout.image_dialog);
-                dialog.setTitle("Image dialog");
-
-                ImageView image = (ImageView) dialog.findViewById(R.id.image);
-
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                    image.setImageBitmap(bitmap);
-                    Toast.makeText(this, selectedImageUri.getPath(),Toast.LENGTH_SHORT).show();
-
-                    dialog.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }*/
-
-
-
-    private void selectPicture(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-    }
 
 
 
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-                Uri selectedImageUri = data.getData();
-
-
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-
-                    if (selectedImageUri != null){
-                        imagePath = selectedImageUri.toString();
-                    }
-                    if (preview != null){
-                        preview.setImageBitmap(bitmap);
-                    }
-
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-    }
-
-    private void reset(){
-        preview = null;
-        imagePath = "";
-    }
 
 
     @Override
@@ -392,15 +266,7 @@ public class Home extends AppCompatActivity
                         final EditText editName = (EditText) dialog.findViewById(R.id.re_name);
                         final EditText editDescription = (EditText) dialog.findViewById(R.id.re_description);
 
-                        final Button btnImage = (Button) dialog.findViewById(R.id.btn_image);
-                        btnImage.setOnClickListener(new View.OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                preview = (ImageView)dialog.findViewById(R.id.ivImage);
-                                selectPicture();
-                            }
-                        });
 
                         final EditText editAdress = (EditText) dialog.findViewById(R.id.re_adress);
                         final EditText editTel = (EditText) dialog.findViewById(R.id.re_telephone);
@@ -449,16 +315,13 @@ public class Home extends AppCompatActivity
                         } catch (NumberFormatException e) {
                             Toast.makeText(Home.this, "Adress can't be empty.",Toast.LENGTH_SHORT).show();
                         }
-                        if (imagePath.isEmpty() || preview==null){
-                            Toast.makeText(Home.this, "Image must be chsen.",Toast.LENGTH_SHORT).show();
-                        }
 
 
-                    //    Picasso.with(Home.this).load("https://www.google.rs/search?q=house+images+jpg&biw=1339&bih=557&tbs=isz:ex,iszw:256,iszh:256&tbm=isch&source=lnt#imgrc=oWRRKDgKIojrzM:").into(image);
+
 
                         realEstate.setmName(editName.getText().toString());
                         realEstate.setmDescription(editDescription.getText().toString());
-                        realEstate.setmImage(imagePath);
+
                         realEstate.setmAdress(editAdress.getText().toString());
                         realEstate.setmTel(Integer.parseInt(editTel.getText().toString()));
                         realEstate.setmQuadrature(Double.parseDouble(editQuad.getText().toString()));
@@ -467,7 +330,7 @@ public class Home extends AppCompatActivity
 
                         try {
                             getDatabaseHelper().getRealEstateDao().create(realEstate);
-                            reset();
+
 
                             refresh();
                             showMessage(getString(R.string.first_mess_add),getString(R.string.first_mess_title));
@@ -496,6 +359,9 @@ public class Home extends AppCompatActivity
 
 
                 break;
+            case R.id.action_settings:
+                Intent i = new Intent(Home.this,SettingsActivity.class);
+                startActivity(i);
         }
         //noinspection SimplifiableIfStatement
 

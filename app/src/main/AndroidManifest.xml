@@ -40,10 +40,6 @@
             android:label="@string/second_activity_name"
             android:icon="@mipmap/ic_launcher"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="rs.aleph.android.example21.activities.DetailActivity"
-            android:label="Detail Activity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 
